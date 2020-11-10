@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Herolab Online to Fantasy Grounds Starfinder</title>
+</head>
+<body>
+  <h1>Starfinder HLO to FG Converter</h1>
+  <div id="uToken">
+  Enter your Character User Token<br/>
+  <input type="text" id="userToken" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjIxNDc0ODM2NDcsImhsbyI6IlgtUmc5QlBEc24ycEpURzd6RnhIQkU4QUVoU1lKRWhyRDZTcVNuWXFOb2x4Yk56eXc2T2xRU3RpNzZVaHhzVSJ9.tVHE0zn_YIlX97EUWf0nnf8RDXzcyMopdTdnxFmdikU"><br /><br />
+  Enter your Character Element Token<br />
+  <input type="text" id="elementToken" value="$lDFV9QG~@SF#"><br /><br />
+  <button id="grabChar" style="text-align: center">Pull character from HLO</button><br /><br />
+  <hr>
+  <textarea id="charJSON"></textarea>
+  <textarea id="convChar"></textarea>
+  <button id="buildChar" style="text-align: center">Parse Character</button>
+  <script src="dist/bundle.js"></script>
+</body>
+</html>
