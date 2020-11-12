@@ -134,6 +134,7 @@ var keyAbility = "";
 var baseRanks = "";
 var compScore = 0;
 var ranksTotal = 0;
+var classLevel = "";
 var soldierArray = ["Acrobatics", "Athletics", "Engineering", "Intimidate", "Medicine", "Piloting", "Survival"];
 var envoyArray =  ["Acrobatics", "Athletics", "Bluff", "Computers", "Culture", "Diplomacy", "Disguise", "Engineering", "Intimidate", "Medicine", "Perception", "Piloting", "Sense Motive", "Sleight of Hand", "Stealth"];
 var mechanicArray =  ["Athletics", "Computers", "Engineering", "Medicine", "Perception", "Piloting"];
@@ -472,7 +473,12 @@ async function getCharacter() {
                      getArchetype = w.name.split("(")[1].split(")")[0];
                  }
                  //getArchetype = w.name.split("(")[1].split(")")[0];
-                 charClass = w.name.split("(")[0].trim();
+				 charClass = w.name.split("(")[0].trim();
+				 if (classCount > 1) {
+                    classLevel += " / " + charClass + " " + w.clLevelNet;
+                } else {
+                    classLevel = charClass + " " + w.clLevelNet;
+                }
                  smallCharClass = charClass.toLowerCase().replace(/[ _-]/g, '');
                  //console.log("Class reference: " + smallCharClass);
  
@@ -552,7 +558,8 @@ async function getCharacter() {
                  classCount += 1;
              }
          });
-         buildXML += "\t\t</classes>\n";
+		 buildXML += "\t\t</classes>\n";
+		 buildXML += "\t\t<classlevel type=\"string\">" + classLevel + "</classlevel>\n";
  
          // Abilities
          buildXML += "\t\t<abilities>\n";
