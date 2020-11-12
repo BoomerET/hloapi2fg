@@ -317,538 +317,533 @@ async function getCharacter() {
    //document.getElementById('charJSON').value = 
    //assert(typeof response === 'object', 'getCharacter response')
    jquery__WEBPACK_IMPORTED_MODULE_1___default()('#buildChar').on("click", function() {
-      //console.log("Button clicked")
-      var character = jQuery.extend(true, {}, response)
-      //console.log(character)
-      var buildXML = startXML;
-      jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(character.export.actors, function(index, element) {
-         buildXML += "\t\t<name type=\"string\">" + element.name + "</name>\n";
-         pcFilename = element.name;  
-      });
-      jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(character.export.actors, function(i, v) {
-         // Race
-         jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.gameValues, function(k, x) {
-             if (k == "actTypeText") {
-                 charRaceText = x;
-             } else if (k == "actRace") {
-                 charRaceType = x;
-             } else if (k == "actAlignment") {
-                 buildXML += "\t\t<alignment type=\"string\">" + x + "</alignment>\n";
-             }
-             
-         });
-         buildXML += "\t\t<race type=\"string\">" + charRaceText + "</race>\n";
-       buildXML += "\t\t<racelink type=\"windowreference\">\n";
-       buildXML += "\t\t\t<class>race</class>\n";
-       buildXML += "\t\t\t<recordname>reference.race." + charRaceType + "@*</recordname>\n";
-         buildXML += "\t\t</racelink>\n";
-         
-         // Theme
-         jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
-             if (w.compset == "Ability") {
-                 // Find theme knowledge to get Theme, abThemeKnowSpa.139
-                 var themeKnow = j.substring(0,11);
-                 if (themeKnow == "abThemeKnow") {
-                     var thisTheme = j.substring(11,14);
- 
-                     switch(j.substring(11,14)) {
-                         case "AcP":
-                             fullTheme = "Ace Pilot";
-                             littleTheme = "acepilot";
-                             break;
-                         case "Bio":
-                             fullTheme = "Biotechnician";
-                             littleTheme = "biotechnician";
-                             break;
-                         case "BoH":
-                             fullTheme = "Bounty Hunter";
-                             littleTheme = "bountyhunter";
-                             break;
-                         case "CoA":
-                             fullTheme = "Corporate Agent";
-                             littleTheme = "corporateagent";
-                             break;
-                         case "Cul":
-                             fullTheme = "Cultist";
-                             littleTheme = "cultist";
-                             break;
-                         case "Cyb":
-                             fullTheme = "Cyberborn";
-                             littleTheme = "cyberborn";
-                             break;
-                         case "DTo":
-                             fullTheme = "Death-Touched";
-                             littleTheme = "deathtouched";
-                             break;
-                         case "Dra":
-                             fullTheme = "Dragonblood";
-                             littleTheme = "dragonblood";
-                             break;
-                         case "DrP":
-                             fullTheme = ">Dream Prophet";
-                             littleTheme = "dreamprophet";
-                             break;
-                         case "Gla":
-                             fullTheme = "Gladiator";
-                             littleTheme = "gladiator";
-                             break;
-                         case "Ico":
-                             fullTheme = "Icon";
-                             littleTheme = "icon";
-                             break;
-                         case "Mer":
-                             fullTheme = "Mercenary";
-                             littleTheme = "mercenary";
-                             break;
-                         case "Out":
-                             fullTheme = "Outlaw";
-                             littleTheme = "outlaw";
-                             break;
-                         case "Pri":
-                             fullTheme = "Priest";
-                             littleTheme = "priest";
-                             break;
-                         case "Rob":
-                             fullTheme = "Roboticist";
-                             littleTheme = "roboticist";
-                             break;
-                         case "Sch":
-                             fullTheme = "Scholar";
-                             littleTheme = "scholar";
-                             break;
-                         case "SoD":
-                             fullTheme = "Solar Disciple";
-                             littleTheme = "solardisciple";
-                             break;
-                         case "SPi":
-                             fullTheme = "Space Pirate";
-                             littleTheme = "spacepirate";
-                             break;
-                         case "Spa":
-                             fullTheme = "Spacefarer";
-                             littleTheme = "spacefarer";
-                             break;
-                         case "TeP":
-                             fullTheme = "Tempered Pilgrim";
-                             littleTheme = "temperedpilgrim";
-                             break;
-                         case "WiW":
-                             fullTheme = "Wild Warden";
-                             littleTheme = "wildwarden";
-                             break;
-                         case "Xna":
-                             fullTheme = "Xenoarchaeologist";
-                             littleTheme = "xenoarchaeologist";
-                             break;
-                         case "Xen":
-                             fullTheme = "Xenoseeker";
-                             littleTheme = "xenoseeker";
-                             break;
-                         default:
-                             fullTheme = "Themeless";
-                             littleTheme = "themeless";
-                     }
-                 }
-             }
-         });
-         buildXML += "\t\t<theme type=\"string\">" + fullTheme + "</theme>\n";
-         buildXML += "\t\t<themelink type=\"windowreference\">\n";
-         buildXML += "\t\t\t<class>theme</class>\n";
-         buildXML += "\t\t\t<recordname>reference.theme." + littleTheme + "@*</recordname>\n";
-         buildXML += "\t\t</themelink>\n";
-         buildXML += "\t\t<themerecord type=\"string\">reference.theme." + littleTheme + "@*</themerecord>\n";
- 
-         // Class
-         buildXML += "\t\t<classes>\n";
-         classCount = 1;
-         jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
-             if (w.compset == "Class") {
-                 thisIteration = pad(classCount, 5);
-                 
-                 buildXML += "\t\t\t<id-" + thisIteration + ">\n";
-                 // Check to see if we even have an archetype
-                 if (w.name.indexOf('(') == -1) {
-                     console.log("No archetype");
-                 } else {
-                     getArchetype = w.name.split("(")[1].split(")")[0];
-                 }
-                 //getArchetype = w.name.split("(")[1].split(")")[0];
-				 charClass = w.name.split("(")[0].trim();
-				 if (classCount > 1) {
-                    classLevel += " / " + charClass + " " + w.clLevelNet;
-                } else {
-                    classLevel = charClass + " " + w.clLevelNet;
+        //console.log("Button clicked")
+        var character = jQuery.extend(true, {}, response)
+        //console.log(character)
+        var buildXML = startXML;
+        jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(character.export.actors, function(index, element) {
+            buildXML += "\t\t<name type=\"string\">" + element.name + "</name>\n";
+            pcFilename = element.name;  
+        });
+        jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(character.export.actors, function(i, v) {
+            // Race
+            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.gameValues, function(k, x) {
+                if (k == "actTypeText") {
+                    charRaceText = x;
+                } else if (k == "actRace") {
+                    charRaceType = x;
+                } else if (k == "actAlignment") {
+                    buildXML += "\t\t<alignment type=\"string\">" + x + "</alignment>\n";
                 }
-                 smallCharClass = charClass.toLowerCase().replace(/[ _-]/g, '');
-                 //console.log("Class reference: " + smallCharClass);
+            });
+            buildXML += "\t\t<race type=\"string\">" + charRaceText + "</race>\n";
+            buildXML += "\t\t<racelink type=\"windowreference\">\n";
+            buildXML += "\t\t\t<class>race</class>\n";
+            buildXML += "\t\t\t<recordname>reference.race." + charRaceType + "@*</recordname>\n";
+            buildXML += "\t\t</racelink>\n";
+         
+            // Theme
+            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
+                if (w.compset == "Ability") {
+                    // Find theme knowledge to get Theme, abThemeKnowSpa.139
+                    var themeKnow = j.substring(0,11);
+                    if (themeKnow == "abThemeKnow") {
+                        var thisTheme = j.substring(11,14);
  
-                 switch(smallCharClass) {
-                     case "envoy":
-                         buildXML += "\t\t\t\t<classkey type=\"string\">Charisma</classkey>\n";
-                         keyAbility = "charisma";
-                         baseRanks = 8;
-                         break;
-                     case "mechanic":
-                         buildXML += "\t\t\t\t<classkey type=\"string\">Intelligence</classkey>\n";
-                         keyAbility = "intelligence";
-                         baseRanks = 4;
-                         break;
-                     case "mystic":
-                         buildXML += "\t\t\t\t<classkey type=\"string\">Wisdom</classkey>\n";
-                         keyAbility = "wisdom";
-                         baseRanks = 6;
-                         break;
-                     case "operative":
-                         buildXML += "\t\t\t\t<classkey type=\"string\">Dexterity</classkey>\n";
-                         keyAbility = "dexterity";
-                         baseRanks = 8;
-                         break;
-                     case "solarian":
-                         buildXML += "\t\t\t\t<classkey type=\"string\">Charisma</classkey>\n";
-                         keyAbility = "charisma";
-                         baseRanks = 4;
-                         break;
-                     case "soldier":
-                         buildXML += "\t\t\t\t<classkey type=\"string\">Strength</classkey>\n";
-                         keyAbility = "strength";
-                         baseRanks = 4;
-                         break;
-                     case "technomancer":
-                         buildXML += "\t\t\t\t<classkey type=\"string\">Intelligence</classkey>\n";
-                         keyAbility = "intelligence";
-                         baseRanks = 4;
-                         break;
-                     default:
-                         buildXML += "\t\t\t\t<classkey type=\"string\">None</classkey>\n";
-                 }
-                 // FIXME, what is this?
-                 buildXML += "\t\t\t\t<classkeymod type=\"number\">0</classkeymod>\n";
+                        switch(j.substring(11,14)) {
+                            case "AcP":
+                                fullTheme = "Ace Pilot";
+                                littleTheme = "acepilot";
+                                break;
+                            case "Bio":
+                                fullTheme = "Biotechnician";
+                                littleTheme = "biotechnician";
+                                break;
+                            case "BoH":
+                                fullTheme = "Bounty Hunter";
+                                littleTheme = "bountyhunter";
+                                break;
+                            case "CoA":
+                                fullTheme = "Corporate Agent";
+                                littleTheme = "corporateagent";
+                                break;
+                            case "Cul":
+                                fullTheme = "Cultist";
+                                littleTheme = "cultist";
+                                break;
+                            case "Cyb":
+                                fullTheme = "Cyberborn";
+                                littleTheme = "cyberborn";
+                                break;
+                            case "DTo":
+                                fullTheme = "Death-Touched";
+                                littleTheme = "deathtouched";
+                                break;
+                            case "Dra":
+                                fullTheme = "Dragonblood";
+                                littleTheme = "dragonblood";
+                                break;
+                            case "DrP":
+                                fullTheme = ">Dream Prophet";
+                                littleTheme = "dreamprophet";
+                                break;
+                            case "Gla":
+                                fullTheme = "Gladiator";
+                                littleTheme = "gladiator";
+                                break;
+                            case "Ico":
+                                fullTheme = "Icon";
+                                littleTheme = "icon";
+                                break;
+                            case "Mer":
+                                fullTheme = "Mercenary";
+                                littleTheme = "mercenary";
+                                break;
+                            case "Out":
+                                fullTheme = "Outlaw";
+                                littleTheme = "outlaw";
+                                break;
+                            case "Pri":
+                                fullTheme = "Priest";
+                                littleTheme = "priest";
+                                break;
+                            case "Rob":
+                                fullTheme = "Roboticist";
+                                littleTheme = "roboticist";
+                                break;
+                            case "Sch":
+                                fullTheme = "Scholar";
+                                littleTheme = "scholar";
+                                break;
+                            case "SoD":
+                                fullTheme = "Solar Disciple";
+                                littleTheme = "solardisciple";
+                                break;
+                            case "SPi":
+                                fullTheme = "Space Pirate";
+                                littleTheme = "spacepirate";
+                                break;
+                            case "Spa":
+                                fullTheme = "Spacefarer";
+                                littleTheme = "spacefarer";
+                                break;
+                            case "TeP":
+                                fullTheme = "Tempered Pilgrim";
+                                littleTheme = "temperedpilgrim";
+                                break;
+                            case "WiW":
+                                fullTheme = "Wild Warden";
+                                littleTheme = "wildwarden";
+                                break;
+                            case "Xna":
+                                fullTheme = "Xenoarchaeologist";
+                                littleTheme = "xenoarchaeologist";
+                                break;
+                            case "Xen":
+                                fullTheme = "Xenoseeker";
+                                littleTheme = "xenoseeker";
+                                break;
+                            default:
+                                fullTheme = "Themeless";
+                             littleTheme = "themeless";
+                        }
+                    }
+                }
+            });
+            buildXML += "\t\t<theme type=\"string\">" + fullTheme + "</theme>\n";
+            buildXML += "\t\t<themelink type=\"windowreference\">\n";
+            buildXML += "\t\t\t<class>theme</class>\n";
+            buildXML += "\t\t\t<recordname>reference.theme." + littleTheme + "@*</recordname>\n";
+            buildXML += "\t\t</themelink>\n";
+            buildXML += "\t\t<themerecord type=\"string\">reference.theme." + littleTheme + "@*</themerecord>\n";
  
-                 // class ranks depends on class and intelligence
-                 jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
-                     if (w.compset == "AbilScore") {
-                         //if (w.name == "Intelligence") {
-                         compScore = Math.floor((parseInt(w.stNet) - 10) / 2);
-                     }
-                 });
+            // Class
+            buildXML += "\t\t<classes>\n";
+            classCount = 1;
+            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
+                if (w.compset == "Class") {
+                    thisIteration = pad(classCount, 5);
+                    buildXML += "\t\t\t<id-" + thisIteration + ">\n";
+                    // Check to see if we even have an archetype
+                    if (w.name.indexOf('(') == -1) {
+                        console.log("No archetype");
+                    } else {
+                        getArchetype = w.name.split("(")[1].split(")")[0];
+                    }
+                    //getArchetype = w.name.split("(")[1].split(")")[0];
+                    charClass = w.name.split("(")[0].trim();
+                    if (classCount > 1) {
+                        classLevel += " / " + charClass + " " + w.clLevelNet;
+                    } else {
+                        classLevel = charClass + " " + w.clLevelNet;
+                    }
+                    smallCharClass = charClass.toLowerCase().replace(/[ _-]/g, '');
+                    //console.log("Class reference: " + smallCharClass);
  
-                 ranksTotal = parseInt(baseRanks) + compScore;
-                 buildXML += "\t\t\t\t<classskillranks type=\"number\">" + ranksTotal.toString() + "</classskillranks>\n";
+                    switch(smallCharClass) {
+                        case "envoy":
+                            buildXML += "\t\t\t\t<classkey type=\"string\">Charisma</classkey>\n";
+                            keyAbility = "charisma";
+                            baseRanks = 8;
+                            break;
+                        case "mechanic":
+                            buildXML += "\t\t\t\t<classkey type=\"string\">Intelligence</classkey>\n";
+                            keyAbility = "intelligence";
+                            baseRanks = 4;
+                            break;
+                        case "mystic":
+                            buildXML += "\t\t\t\t<classkey type=\"string\">Wisdom</classkey>\n";
+                            keyAbility = "wisdom";
+                            baseRanks = 6;
+                            break;
+                        case "operative":
+                            buildXML += "\t\t\t\t<classkey type=\"string\">Dexterity</classkey>\n";
+                            keyAbility = "dexterity";
+                            baseRanks = 8;
+                            break;
+                        case "solarian":
+                            buildXML += "\t\t\t\t<classkey type=\"string\">Charisma</classkey>\n";
+                            keyAbility = "charisma";
+                            baseRanks = 4;
+                            break;
+                        case "soldier":
+                            buildXML += "\t\t\t\t<classkey type=\"string\">Strength</classkey>\n";
+                            keyAbility = "strength";
+                            baseRanks = 4;
+                            break;
+                        case "technomancer":
+                            buildXML += "\t\t\t\t<classkey type=\"string\">Intelligence</classkey>\n";
+                            keyAbility = "intelligence";
+                            baseRanks = 4;
+                            break;
+                        default:
+                            buildXML += "\t\t\t\t<classkey type=\"string\">None</classkey>\n";
+                    }
+                    // FIXME, what is this?
+                    buildXML += "\t\t\t\t<classkeymod type=\"number\">0</classkeymod>\n";
  
-                 // FIXME, what is this?
-                 //buildXML += "\t\t\t\t<classstamina type=\"number\">6</classstamina>\n";
+                    // class ranks depends on class and intelligence
+                    jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
+                        if (w.compset == "AbilScore") {
+                            //if (w.name == "Intelligence") {
+                            compScore = Math.floor((parseInt(w.stNet) - 10) / 2);
+                        }
+                    });
  
-                 if (getArchetype != "") {
-                     buildXML += "\t\t\t\t<archetype type=\"string\">" + getArchetype + "</archetype>\n";
-                     buildXML += "\t\t\t\t<archetypelink type=\"windowreference\">\n";
-                     buildXML += "\t\t\t\t\t<class>archetype</class>\n";
-                     buildXML += "\t\t\t\t\t<recordname>reference.archetype." + getArchetype.toLowerCase().replace(/[ _-]/g, '') + "@*</recordname>\n";
-                     buildXML += "\t\t\t\t</archetypelink>\n";
-                 }
-                 buildXML += "\t\t\t\t<name type=\"string\">" + charClass + "</name>\n";
-                 buildXML += "\t\t\t\t<level type=\"number\">" + w.clLevelNet + "</level>\n";
-                 buildXML += "\t\t\t\t<shortcut type=\"windowreference\">\n";
-                 buildXML += "\t\t\t\t\t<class>class</class>\n";
-                 buildXML += "\t\t\t\t\t<recordname>reference.class." + smallCharClass + "@*</recordname>\n";
-                 buildXML += "\t\t\t\t</shortcut>\n";
-                 buildXML += "\t\t\t\t<skillranks type=\"number\">" + baseRanks + "</skillranks>\n";
+                    ranksTotal = parseInt(baseRanks) + compScore;
+                    buildXML += "\t\t\t\t<classskillranks type=\"number\">" + ranksTotal.toString() + "</classskillranks>\n";
  
+                    // FIXME, what is this?
+                    //buildXML += "\t\t\t\t<classstamina type=\"number\">6</classstamina>\n";
+ 
+                    if (getArchetype != "") {
+                        buildXML += "\t\t\t\t<archetype type=\"string\">" + getArchetype + "</archetype>\n";
+                        buildXML += "\t\t\t\t<archetypelink type=\"windowreference\">\n";
+                        buildXML += "\t\t\t\t\t<class>archetype</class>\n";
+                        buildXML += "\t\t\t\t\t<recordname>reference.archetype." + getArchetype.toLowerCase().replace(/[ _-]/g, '') + "@*</recordname>\n";
+                        buildXML += "\t\t\t\t</archetypelink>\n";
+                    }
+                    buildXML += "\t\t\t\t<name type=\"string\">" + charClass + "</name>\n";
+                    buildXML += "\t\t\t\t<level type=\"number\">" + w.clLevelNet + "</level>\n";
+                    buildXML += "\t\t\t\t<shortcut type=\"windowreference\">\n";
+                    buildXML += "\t\t\t\t\t<class>class</class>\n";
+                    buildXML += "\t\t\t\t\t<recordname>reference.class." + smallCharClass + "@*</recordname>\n";
+                    buildXML += "\t\t\t\t</shortcut>\n";
+                    buildXML += "\t\t\t\t<skillranks type=\"number\">" + baseRanks + "</skillranks>\n";
+                    buildXML += "\t\t\t</id-" + thisIteration + ">\n";
+                    classCount += 1;
+                }
+            });
+            buildXML += "\t\t</classes>\n";
+            buildXML += "\t\t<classlevel type=\"string\">" + classLevel + "</classlevel>\n";
+ 
+            // Abilities
+            buildXML += "\t\t<abilities>\n";
+            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
+                if (w.compset == "AbilScore") {
+                    buildXML += "\t\t\t<" + w.name.toLowerCase() + ">\n";
+                    buildXML += "\t\t\t\t<score type=\"number\">" + w.stNet + "</score>\n";
+                    if (w.hasOwnProperty("stAbScModifier")) {
+                        buildXML += "\t\t\t\t<bonus type=\"number\">" + w.stAbScModifier + "</bonus>\n";
+                    } else {
+                        buildXML += "\t\t\t\t<bonus type=\"number\">0</bonus>\n";
+                    }
+                    buildXML += "\t\t\t</" + w.name.toLowerCase() + ">\n";
+                } else if (w.compset == "Movement") {
+                    charSpeed = w. stNet;
+                } else if (w.compset == "Reserves") {
+                    if (w.name == "Hit Points") {
+                        charTotalHP = w.rvMax;
+                        charCurrHP = w.rvCurrent;
+                    } else if (w.name == "Stamina") {
+                        charTotalSP = w.rvMax;
+                        charCurrSP = w.rvCurrent;
+                    } else if (w.name == "Resolve Points") {
+                        charTotalRP = w.rvMax;
+                        charCurrRP = w.rvCurrent;
+                    }
+                } 
+            });
+ 
+            // FIXME
+            //buildXML += "\t\t\t<key type=\"number\">42</key>\n";
+            buildXML += "\t\t\t<keyability type=\"string\">" + keyAbility +"</keyability>\n";
+            // FIXME
+            //buildXML += "\t\t\t<keyabilitymod type=\"number\">45</keyabilitymod>\n";
+            buildXML += "\t\t</abilities>\n";
+ 
+            // Stamina points
+            buildXML += "\t\t<sp>\n";
+            buildXML += "\t\t\t<current type=\"number\">" + charCurrSP + "</current>\n";
+            buildXML += "\t\t\t<fatique type=\"number\">0</fatique>\n";
+            buildXML += "\t\t\t<mod type=\"number\">0</mod>\n";
+            buildXML += "\t\t\t<temporary type=\"number\">0</temporary>\n";
+            buildXML += "\t\t\t<total type=\"number\">" + charTotalSP + "</total>\n";
+            buildXML += "\t\t</sp>\n";
+ 
+            // Skills
+            totalSkills = 1;
+            buildXML += "\t\t<skilllist>\n";
+            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
+                if (w.compset == "Skill") {
+                    thisIteration = pad(totalSkills, 5);
+                    totalSkills += 1;
+                    buildXML += "\t\t\t<id-" + thisIteration + ">\n";
+ 
+                    buildXML += "\t\t\t\t<label type=\"string\">" + w.name + "</label>\n";
+                    if (w.hasOwnProperty("skRanks")) {
+                        buildXML += "\t\t\t\t<ranks type=\"number\">" + w.skRanks + "</ranks>\n";
+                    } else {
+                        buildXML += "\t\t\t\t<ranks type=\"number\">0</ranks>\n";
+                    }
+                    if (w.hasOwnProperty("stNet")) {
+                        buildXML += "\t\t\t\t<total type=\"number\">" + w.stNet + "</total>\n";
+                    } else {
+                        buildXML += "\t\t\t\t<total type=\"number\">0</total>\n";
+                    }
+                    if (w.hasOwnProperty("stMiscMod")) {
+                        buildXML += "\t\t\t\t<miscmod type=\"number\">" + w.stMiscMod + "</miscmod>\n";
+                    }
+                    buildXML += "\t\t\t\t<ranksfree type=\"number\">0</ranksfree>\n";
+                    // Let's do Soldier first, he has only 8 class skills
+                    //console.log(smallCharClass);
+                    if (smallCharClass == "soldier") {
+                        //console.log(w.name);
+                        //console.log(jQuery.inArray(w.name, soldArray));
+                        if (jQuery.inArray(w.name, soldierArray) >= 0) {
+                            buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
+                        } else {
+                            buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
+                        }
+                    } else if (smallCharClass == "envoy") {
+                        if (jQuery.inArray(w.name, envoyArray) >= 0) {
+                            buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
+                        } else {
+                            buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
+                        }
+                    } else if (smallCharClass == "mechanic") {
+                        if (jQuery.inArray(w.name, mechanicArray) >= 0) {
+                            buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
+                        } else {
+                            buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
+                        }
+                    } else if (smallCharClass == "mystic") {
+                        if (jQuery.inArray(w.name, mysticArray) >= 0) {
+                            buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
+                        } else {
+                            buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
+                        }
+                    } else if (smallCharClass == "operative") {
+                        if (jQuery.inArray(w.name, operativeArray) >= 0) {
+                            buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
+                        } else {
+                            buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
+                        }
+                    } else if (smallCharClass == "solarian") {
+                        if (jQuery.inArray(w.name, solarianArray) >= 0) {
+                            buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
+                        } else {
+                            buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
+                        }
+                    } else if (smallCharClass == "technomancer") {
+                        if (jQuery.inArray(w.name, technomancerArray) >= 0) {
+                            buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
+                        } else {
+                            buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
+                        }
+                    }
+                    if (jQuery.inArray(w.name, skillDex) >= 0) {
+                        buildXML += "\t\t\t\t<statname type=\"string\">dexterity</statname>\n";
+                    } else if (jQuery.inArray(w.name, skillCha) >= 0) {
+                        buildXML += "\t\t\t\t<statname type=\"string\">charisma</statname>\n";
+                    } else if (jQuery.inArray(w.name, skillInt) >= 0) {
+                        buildXML += "\t\t\t\t<statname type=\"string\">intelligence</statname>\n";
+                    } else if (jQuery.inArray(w.name, skillStr) >= 0) {
+                        buildXML += "\t\t\t\t<statname type=\"string\">strength</statname>\n";
+                    } else if (jQuery.inArray(w.name, skillWis) >= 0) {
+                        buildXML += "\t\t\t\t<statname type=\"string\">wisdom</statname>\n";
+                    }
                  
-                 buildXML += "\t\t\t</id-" + thisIteration + ">\n";
-                 classCount += 1;
-             }
-         });
-		 buildXML += "\t\t</classes>\n";
-		 buildXML += "\t\t<classlevel type=\"string\">" + classLevel + "</classlevel>\n";
+                    buildXML += "\t\t\t\t<showonminisheet type=\"number\"></showonminisheet>\n";
+                    buildXML += "\t\t\t</id-" + thisIteration + ">\n";
+                }
+            });
+            buildXML += "\t\t</skilllist>\n";
  
-         // Abilities
-         buildXML += "\t\t<abilities>\n";
-         jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
-             if (w.compset == "AbilScore") {
-                 buildXML += "\t\t\t<" + w.name.toLowerCase() + ">\n";
-                 buildXML += "\t\t\t\t<score type=\"number\">" + w.stNet + "</score>\n";
-                 if (w.hasOwnProperty("stAbScModifier")) {
-                     buildXML += "\t\t\t\t<bonus type=\"number\">" + w.stAbScModifier + "</bonus>\n";
-                 } else {
-                     buildXML += "\t\t\t\t<bonus type=\"number\">0</bonus>\n";
-                 }
-                 buildXML += "\t\t\t</" + w.name.toLowerCase() + ">\n";
-             } else if (w.compset == "Movement") {
-                 charSpeed = w. stNet;
-             } else if (w.compset == "Reserves") {
-                 if (w.name == "Hit Points") {
-                     charTotalHP = w.rvMax;
-                     charCurrHP = w.rvCurrent;
-                 } else if (w.name == "Stamina") {
-                     charTotalSP = w.rvMax;
-                     charCurrSP = w.rvCurrent;
-                 } else if (w.name == "Resolve Points") {
-                     charTotalRP = w.rvMax;
-                     charCurrRP = w.rvCurrent;
-                 }
-             } 
-         });
- 
-         // FIXME
-         //buildXML += "\t\t\t<key type=\"number\">42</key>\n";
-         buildXML += "\t\t\t<keyability type=\"string\">" + keyAbility +"</keyability>\n";
-         // FIXME
-       //buildXML += "\t\t\t<keyabilitymod type=\"number\">45</keyabilitymod>\n";
-         buildXML += "\t\t</abilities>\n";
- 
-         // Stamina points
-         buildXML += "\t\t<sp>\n";
-       buildXML += "\t\t\t<current type=\"number\">" + charCurrSP + "</current>\n";
-       buildXML += "\t\t\t<fatique type=\"number\">0</fatique>\n";
-       buildXML += "\t\t\t<mod type=\"number\">0</mod>\n";
-       buildXML += "\t\t\t<temporary type=\"number\">0</temporary>\n";
-       buildXML += "\t\t\t<total type=\"number\">" + charTotalSP + "</total>\n";
-         buildXML += "\t\t</sp>\n";
- 
-         // Skills
-         totalSkills = 1;
-         buildXML += "\t\t<skilllist>\n";
-         jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
-             if (w.compset == "Skill") {
-                 thisIteration = pad(totalSkills, 5);
-                 totalSkills += 1;
-                 buildXML += "\t\t\t<id-" + thisIteration + ">\n";
- 
-                 buildXML += "\t\t\t\t<label type=\"string\">" + w.name + "</label>\n";
-                 if (w.hasOwnProperty("skRanks")) {
-                     buildXML += "\t\t\t\t<ranks type=\"number\">" + w.skRanks + "</ranks>\n";
-                 } else {
-                     buildXML += "\t\t\t\t<ranks type=\"number\">0</ranks>\n";
-                 }
-                 if (w.hasOwnProperty("stNet")) {
-                     buildXML += "\t\t\t\t<total type=\"number\">" + w.stNet + "</total>\n";
-                 } else {
-                     buildXML += "\t\t\t\t<total type=\"number\">0</total>\n";
-                 }
-                 if (w.hasOwnProperty("stMiscMod")) {
-                     buildXML += "\t\t\t\t<miscmod type=\"number\">" + w.stMiscMod + "</miscmod>\n";
-                 }
-                 buildXML += "\t\t\t\t<ranksfree type=\"number\">0</ranksfree>\n";
-                 // Let's do Soldier first, he has only 8 class skills
-                 //console.log(smallCharClass);
-                 if (smallCharClass == "soldier") {
-                     //console.log(w.name);
-                     //console.log(jQuery.inArray(w.name, soldArray));
-                     if (jQuery.inArray(w.name, soldierArray) >= 0) {
-                         buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
-                     } else {
-                         buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
-                     }
-                 } else if (smallCharClass == "envoy") {
-                     if (jQuery.inArray(w.name, envoyArray) >= 0) {
-                         buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
-                     } else {
-                         buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
-                     }
-                 } else if (smallCharClass == "mechanic") {
-                     if (jQuery.inArray(w.name, mechanicArray) >= 0) {
-                         buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
-                     } else {
-                         buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
-                     }
-                 } else if (smallCharClass == "mystic") {
-                     if (jQuery.inArray(w.name, mysticArray) >= 0) {
-                         buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
-                     } else {
-                         buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
-                     }
-                 } else if (smallCharClass == "operative") {
-                     if (jQuery.inArray(w.name, operativeArray) >= 0) {
-                         buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
-                     } else {
-                         buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
-                     }
-                 } else if (smallCharClass == "solarian") {
-                     if (jQuery.inArray(w.name, solarianArray) >= 0) {
-                         buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
-                     } else {
-                         buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
-                     }
-                 } else if (smallCharClass == "technomancer") {
-                     if (jQuery.inArray(w.name, technomancerArray) >= 0) {
-                         buildXML += "\t\t\t\t<state type=\"number\">1</state>\n";
-                     } else {
-                         buildXML += "\t\t\t\t<state type=\"number\">0</state>\n";
-                     }
-                 }
-                 if (jQuery.inArray(w.name, skillDex) >= 0) {
-                     buildXML += "\t\t\t\t<statname type=\"string\">dexterity</statname>\n";
-                 } else if (jQuery.inArray(w.name, skillCha) >= 0) {
-                     buildXML += "\t\t\t\t<statname type=\"string\">charisma</statname>\n";
-                 } else if (jQuery.inArray(w.name, skillInt) >= 0) {
-                     buildXML += "\t\t\t\t<statname type=\"string\">intelligence</statname>\n";
-                 } else if (jQuery.inArray(w.name, skillStr) >= 0) {
-                     buildXML += "\t\t\t\t<statname type=\"string\">strength</statname>\n";
-                 } else if (jQuery.inArray(w.name, skillWis) >= 0) {
-                     buildXML += "\t\t\t\t<statname type=\"string\">wisdom</statname>\n";
-                 }
- 
-                 buildXML += "\t\t\t\t<showonminisheet type=\"number\"></showonminisheet>\n";
-                 buildXML += "\t\t\t</id-" + thisIteration + ">\n";
-             }
-         });
-         buildXML += "\t\t</skilllist>\n";
- 
-         // Racial Traits
-         var abilityCount = 1;
-         buildXML += "\t\t<traitlist>\n";
-         jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
-             if (w.compset == "Ability" && !w.hasOwnProperty("AbilType")) {
-                 // Need to determine if this is a class ability or racial trait
-                 thisIteration = pad(abilityCount, 5);
-                 abilityCount += 1
-                 buildXML += "\t\t\t<id-" + thisIteration + ">\n";
-                 buildXML += "\t\t\t\t<name type=\"string\">" + w.name.split("(")[0] + "</name>\n";
-                 buildXML += "\t\t\t</id-" + thisIteration + ">\n";
-             }
-         });
-         buildXML += "\t\t</traitlist>\n";
- 
-         // Theme abilities
-         var themeCount = 1;
-         buildXML += "\t\t<themeabilitylist>\n";
-         jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
-             if (w.compset == "Ability" && w.hasOwnProperty("AbScUsed")) {
-                 thisIteration = pad(themeCount, 5);
-                 themeCount += 1;
-                 buildXML += "\t\t\t<id-" + thisIteration + ">\n";
-                 buildXML += "\t\t\t\t<name type=\"string\">" + w.name.split("(")[0] + "</name>\n";
-                 buildXML += "\t\t\t</id-" + thisIteration + ">\n";
-             }
-         });
-         buildXML += "\t\t</themeabilitylist>\n";
- 
-         // Class Abilities
-         var classAbilCount = 1;
-         buildXML += "\t\t<specialabilitylist>\n";
-         jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
-             if (w.compset == "Ability" && !w.hasOwnProperty("AbScUsed") && w.hasOwnProperty("AbilType") && w.AbilType == "Extra") {
-                 thisIteration = pad(classAbilCount, 5);
-                 classAbilCount += 1;
-                 buildXML += "\t\t\t<id-" + thisIteration + ">\n";
-                 buildXML += "\t\t\t\t<name type=\"string\">" + w.name.split("(")[0] + "</name>\n";
-                 buildXML += "\t\t\t</id-" + thisIteration + ">\n";
-             }
-         });
-         buildXML += "\t\t</specialabilitylist>\n";
- 
-         // Notes/personal
-         jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
-             if (w.compset == "Personal") {
-                 buildXML += "\t\t<gender type=\"string\">" + w.perGenderText + "</gender>\n";
-                 buildXML += "\t\t<height type=\"string\">" + w.perHeight + "</height>\n";
-                 buildXML += "\t\t<weight type=\"string\">" + w.perWeight + "</weight>\n";
-                 buildXML += "\t\t<age type=\"string\">" + w.perAge + "</age>\n";
-             } else if (w.compset == "Deity") {
-                 buildXML += "\t\t<deity type=\"string\">" + w.name + "</deity>\n";
-             } else if (w.compset == "Homeworld") {
-                 buildXML += "\t\t<homeworld type=\"string\">" + w.name + "</homeworld>\n";
-             } else if (w.compset == "Derived" && w.name == "Initiative") {
-                 buildXML += "\t\t<initiative>\n";
-                 buildXML += "\t\t\t<misc type=\"number\">" + w.stMiscMod + "</misc>\n";
-                 buildXML += "\t\t\t<total type=\"number\">" + w.stNet + "</total>\n";
-                 buildXML += "\t\t</initiative>\n";
-             }
-         });
+            // Racial Traits
+            var abilityCount = 1;
+            buildXML += "\t\t<traitlist>\n";
+            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
+                if (w.compset == "Ability" && !w.hasOwnProperty("AbilType")) {
+                    // Need to determine if this is a class ability or racial trait
+                    thisIteration = pad(abilityCount, 5);
+                    abilityCount += 1
+                    buildXML += "\t\t\t<id-" + thisIteration + ">\n";
+                    buildXML += "\t\t\t\t<name type=\"string\">" + w.name.split("(")[0] + "</name>\n";
+                    buildXML += "\t\t\t</id-" + thisIteration + ">\n";
+                }
+            });
+            buildXML += "\t\t</traitlist>\n";
          
-         // Languages
-         var langCount = 1;
-         buildXML += "\t\t<languagelist>\n";
-         jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
-             if (w.compset == "Language") {
-                 thisIteration = pad(langCount, 5);
-                 langCount += 1;
-                 buildXML += "\t\t\t<id-" + thisIteration + ">\n";
-                 buildXML += "\t\t\t\t<name type=\"string\">" + w.name + "</name>\n";
-                 buildXML += "\t\t\t</id-" + thisIteration + ">\n";
-             }
-         });
-         buildXML += "\t\t</languagelist>\n";
- 
-         // Armor Class
-         buildXML += "\t\t<ac>\n";
-         buildXML += "\t\t\t<sources>\n";
-         buildXML += "\t\t\t</sources>\n";
-         buildXML += "\t\t\t<totals>\n";
-         jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
-             if (w.compset == "ArmorClass") {
-                 if (w.name == "Kinetic Armor Class") {
-                    buildXML += "\t\t\t\t<kac type=\"number\">" + w.stNet + "</kac>\n";
-                 } else if (w.name == "Energy Armor Class") {
-                     buildXML += "\t\t\t\t<eac type=\"number\">" + w.stNet + "</eac>\n";
-                 } else if (w.name == "AC vs. Combat Maneuvers") {
-                     buildXML += "\t\t\t\t<cmd type=\"number\">" + w.stNet + "</cmd>\n";
-                 }
-             }
-         });
-         buildXML += "\t\t\t</totals>\n";
-         buildXML += "\t\t</ac>\n";
- 
-         // Saves
-         buildXML += "\t\t<saves>\n";
-         jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
-             if (w.compset == "Save") {
-                 if (w.name == "Fortitude Save") {
-                     buildXML += "\t\t\t<fortitude>\n";
-                     //buildXML += "\t\t\t\t<base type=\"number\">" + 
-                     buildXML += "\t\t\t</fortitude>\n";
-                 } else if (w.name == "Reflex Save") {
-                     buildXML += "\t\t\t<reflex>\n";
-                     buildXML += "\t\t\t\t<base type=\"number\">" + w.stBaseBon + "</base>\n";
-                     buildXML += "\t\t\t\t<total type=\"number\">" + w.stNet + "</total>\n";
-                     buildXML += "\t\t\t</reflex>\n";
-                 } else if (w.name == "Will Save") {
-                     buildXML += "\t\t\t<will>\n";
-                     buildXML += "\t\t\t\t<base type=\"number\">" + w.stBaseBon + "</base>\n";
-                     buildXML += "\t\t\t\t<total type=\"number\">" + w.stNet + "</total>\n";
-                     buildXML += "\t\t\t</will>\n";
-                 }
-             }
-         });
-         buildXML += "\t\t</saves>\n";
- 
-         // Size
-         if (charRaceType != "ysoki") {
-             buildXML += "\t\t<size type=\"string\">Medium</size>\n";
-         } else {
-             buildXML += "\t\t<size type=\"string\">Small</size>\n";
-         }
- 
- 
-         // Speed
-         buildXML += "\t\t<speed>\n";
-       buildXML += "\t\t\t<armor type=\"number\">0</armor>\n";
-       buildXML += "\t\t\t<base type=\"number\">" + charSpeed + "</base>\n";
-       buildXML += "\t\t\t<final type=\"number\">" + charSpeed + "</final>\n";
-       buildXML += "\t\t\t<misc type=\"number\">0</misc>\n";
-       buildXML += "\t\t\t<temporary type=\"number\">0</temporary>\n";
-       buildXML += "\t\t\t\t<total type=\"number\">" + charSpeed + "</total>\n";
-         buildXML += "\t\t</speed>\n";
+            // Theme abilities
+            var themeCount = 1;
+            buildXML += "\t\t<themeabilitylist>\n";
+            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
+                if (w.compset == "Ability" && w.hasOwnProperty("AbScUsed")) {
+                    thisIteration = pad(themeCount, 5);
+                    themeCount += 1;
+                    buildXML += "\t\t\t<id-" + thisIteration + ">\n";
+                    buildXML += "\t\t\t\t<name type=\"string\">" + w.name.split("(")[0] + "</name>\n";
+                    buildXML += "\t\t\t</id-" + thisIteration + ">\n";
+                }
+            });
+            buildXML += "\t\t</themeabilitylist>\n";
          
-         // Hitpoits
-         buildXML += "\t\t<hp>\n";
-       buildXML += "\t\t\t<current type=\"number\">" + charCurrHP + "</current>\n";
-       buildXML += "\t\t\t<temporary type=\"number\">0</temporary>\n";
-       buildXML += "\t\t\t<total type=\"number\">" + charTotalHP + "</total>\n";
-       buildXML += "\t\t\t<wounds type=\"number\">0</wounds>\n";
-         buildXML += "\t\t</hp>\n";
+            // Class Abilities
+            var classAbilCount = 1;
+            buildXML += "\t\t<specialabilitylist>\n";
+            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
+                if (w.compset == "Ability" && !w.hasOwnProperty("AbScUsed") && w.hasOwnProperty("AbilType") && w.AbilType == "Extra") {
+                    thisIteration = pad(classAbilCount, 5);
+                    classAbilCount += 1;
+                    buildXML += "\t\t\t<id-" + thisIteration + ">\n";
+                    buildXML += "\t\t\t\t<name type=\"string\">" + w.name.split("(")[0] + "</name>\n";
+                    buildXML += "\t\t\t</id-" + thisIteration + ">\n";
+                }
+            });
+            buildXML += "\t\t</specialabilitylist>\n";
+         
+            // Notes/personal
+            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
+                if (w.compset == "Personal") {
+                    buildXML += "\t\t<gender type=\"string\">" + w.perGenderText + "</gender>\n";
+                    buildXML += "\t\t<height type=\"string\">" + w.perHeight + "</height>\n";
+                    buildXML += "\t\t<weight type=\"string\">" + w.perWeight + "</weight>\n";
+                    buildXML += "\t\t<age type=\"string\">" + w.perAge + "</age>\n";
+                } else if (w.compset == "Deity") {
+                    buildXML += "\t\t<deity type=\"string\">" + w.name + "</deity>\n";
+                } else if (w.compset == "Homeworld") {
+                    buildXML += "\t\t<homeworld type=\"string\">" + w.name + "</homeworld>\n";
+                } else if (w.compset == "Derived" && w.name == "Initiative") {
+                    buildXML += "\t\t<initiative>\n";
+                    buildXML += "\t\t\t<misc type=\"number\">" + w.stMiscMod + "</misc>\n";
+                    buildXML += "\t\t\t<total type=\"number\">" + w.stNet + "</total>\n";
+                    buildXML += "\t\t</initiative>\n";
+                }
+            });
+
+            // Languages
+            var langCount = 1;
+            buildXML += "\t\t<languagelist>\n";
+            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
+                if (w.compset == "Language") {
+                    thisIteration = pad(langCount, 5);
+                    langCount += 1;
+                    buildXML += "\t\t\t<id-" + thisIteration + ">\n";
+                    buildXML += "\t\t\t\t<name type=\"string\">" + w.name + "</name>\n";
+                    buildXML += "\t\t\t</id-" + thisIteration + ">\n";
+                }
+            });
+            buildXML += "\t\t</languagelist>\n";
+         
+            // Armor Class
+            buildXML += "\t\t<ac>\n";
+            buildXML += "\t\t\t<sources>\n";
+            buildXML += "\t\t\t</sources>\n";
+            buildXML += "\t\t\t<totals>\n";
+            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
+                if (w.compset == "ArmorClass") {
+                    if (w.name == "Kinetic Armor Class") {
+                       buildXML += "\t\t\t\t<kac type=\"number\">" + w.stNet + "</kac>\n";
+                    } else if (w.name == "Energy Armor Class") {
+                        buildXML += "\t\t\t\t<eac type=\"number\">" + w.stNet + "</eac>\n";
+                    } else if (w.name == "AC vs. Combat Maneuvers") {
+                        buildXML += "\t\t\t\t<cmd type=\"number\">" + w.stNet + "</cmd>\n";
+                    }
+                }
+            });
+            buildXML += "\t\t\t</totals>\n";
+            buildXML += "\t\t</ac>\n";
+         
+            // Saves
+            buildXML += "\t\t<saves>\n";
+            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(v.items, function(j, w) {
+                if (w.compset == "Save") {
+                    if (w.name == "Fortitude Save") {
+                        buildXML += "\t\t\t<fortitude>\n";
+                        //buildXML += "\t\t\t\t<base type=\"number\">" + 
+                        buildXML += "\t\t\t</fortitude>\n";
+                    } else if (w.name == "Reflex Save") {
+                        buildXML += "\t\t\t<reflex>\n";
+                        buildXML += "\t\t\t\t<base type=\"number\">" + w.stBaseBon + "</base>\n";
+                        buildXML += "\t\t\t\t<total type=\"number\">" + w.stNet + "</total>\n";
+                        buildXML += "\t\t\t</reflex>\n";
+                    } else if (w.name == "Will Save") {
+                        buildXML += "\t\t\t<will>\n";
+                        buildXML += "\t\t\t\t<base type=\"number\">" + w.stBaseBon + "</base>\n";
+                        buildXML += "\t\t\t\t<total type=\"number\">" + w.stNet + "</total>\n";
+                        buildXML += "\t\t\t</will>\n";
+                    }
+                }
+            });
+            buildXML += "\t\t</saves>\n";
+         
+            // Size
+            if (charRaceType != "ysoki") {
+                buildXML += "\t\t<size type=\"string\">Medium</size>\n";
+            } else {
+                buildXML += "\t\t<size type=\"string\">Small</size>\n";
+            }
          
          
-         buildXML += "\t\t<rp>\n";
-       buildXML += "\t\t\t<current type=\"number\">" + charCurrRP + "</current>\n";
-       buildXML += "\t\t\t<mod type=\"number\">0</mod>\n";
-       buildXML += "\t\t\t<temporary type=\"number\">0</temporary>\n";
-       buildXML += "\t\t\t<total type=\"number\">" + charTotalRP + "</total>\n";
-       buildXML += "\t\t</rp>\n";
-     });
-      allXML = buildXML + endXML
-      jquery__WEBPACK_IMPORTED_MODULE_1___default()('#convChar').val(allXML)
-   })
+            // Speed
+            buildXML += "\t\t<speed>\n";
+            buildXML += "\t\t\t<armor type=\"number\">0</armor>\n";
+            buildXML += "\t\t\t<base type=\"number\">" + charSpeed + "</base>\n";
+            buildXML += "\t\t\t<final type=\"number\">" + charSpeed + "</final>\n";
+            buildXML += "\t\t\t<misc type=\"number\">0</misc>\n";
+            buildXML += "\t\t\t<temporary type=\"number\">0</temporary>\n";
+            buildXML += "\t\t\t\t<total type=\"number\">" + charSpeed + "</total>\n";
+            buildXML += "\t\t</speed>\n";
+         
+            // Hitpoits
+            buildXML += "\t\t<hp>\n";
+            buildXML += "\t\t\t<current type=\"number\">" + charCurrHP + "</current>\n";
+            buildXML += "\t\t\t<temporary type=\"number\">0</temporary>\n";
+            buildXML += "\t\t\t<total type=\"number\">" + charTotalHP + "</total>\n";
+            buildXML += "\t\t\t<wounds type=\"number\">0</wounds>\n";
+            buildXML += "\t\t</hp>\n";
+
+            buildXML += "\t\t<rp>\n";
+            buildXML += "\t\t\t<current type=\"number\">" + charCurrRP + "</current>\n";
+            buildXML += "\t\t\t<mod type=\"number\">0</mod>\n";
+            buildXML += "\t\t\t<temporary type=\"number\">0</temporary>\n";
+            buildXML += "\t\t\t<total type=\"number\">" + charTotalRP + "</total>\n";
+            buildXML += "\t\t</rp>\n";
+        });
+        allXML = buildXML + endXML
+        jquery__WEBPACK_IMPORTED_MODULE_1___default()('#convChar').val(allXML)
+    })
 
    function pad(num, size) {
       var s = num + "";
@@ -856,28 +851,27 @@ async function getCharacter() {
       while (s.length < size) s = "0" + s;
       return s;
    }
-   
 }
 
 async function unsubscribeAll() {
-   //construct the request to unsubscribe from everything
-   const route = "/v1/access/unsubscribe-all";
-   const request = {
-      accessToken: accessToken,
-      gameServer: gameServer,
-      callerId: 123
-   }
-   const response = await submitRequest(route, request)
+    //construct the request to unsubscribe from everything
+    const route = "/v1/access/unsubscribe-all";
+    const request = {
+        accessToken: accessToken,
+        gameServer: gameServer,
+        callerId: 123
+    }
+    const response = await submitRequest(route, request)
 
-   //there is nothing to do with the response - it's merely an acknowledgement
-   assert(typeof response === 'object', 'unsubscribeAll response')
+    //there is nothing to do with the response - it's merely an acknowledgement
+    assert(typeof response === 'object', 'unsubscribeAll response')
 }
 
 async function submitRequest(url, request) {
-   //serialize the data to json for submission
-   const json = JSON.stringify(request)
+    //serialize the data to json for submission
+    const json = JSON.stringify(request)
 
-   //submit the request
+    //submit the request
    url = API_HOST + url
    const response = await fetch(url, { 
       method: 'POST', 
