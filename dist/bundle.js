@@ -101,8 +101,10 @@ __webpack_require__.r(__webpack_exports__);
 //NOTE! The constants below need to be setup appropriately with your own details for testing.
 
 const TOOL_NAME = "ai6k_hlo_fvtt"
-var USER_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjIxNDc0ODM2NDcsImhsbyI6IlgtUmc5QlBEc24ycEpURzd6RnhIQkU4QUVoU1lKRWhyRDZTcVNuWXFOb2x4Yk56eXc2T2xRU3RpNzZVaHhzVSJ9.tVHE0zn_YIlX97EUWf0nnf8RDXzcyMopdTdnxFmdikU"
-var ELEMENT_TOKEN = "$lDFV9QG~@SF#"
+//var USER_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjIxNDc0ODM2NDcsImhsbyI6IlgtUmc5QlBEc24ycEpURzd6RnhIQkU4QUVoU1lKRWhyRDZTcVNuWXFOb2x4Yk56eXc2T2xRU3RpNzZVaHhzVSJ9.tVHE0zn_YIlX97EUWf0nnf8RDXzcyMopdTdnxFmdikU"
+//var ELEMENT_TOKEN = "$lDFV9QG~@SF#"
+var USER_TOKEN = ""
+var ELEMENT_TOKEN = ""
 
 var startXML = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 startXML += "<root version=\"4\" dataversion=\"20201016\" release=\"19|CoreRPG:4\">\n"
@@ -844,14 +846,15 @@ async function getCharacter() {
         allXML = buildXML + endXML
         jquery__WEBPACK_IMPORTED_MODULE_1___default()('#convChar').val(allXML)
     })
-
-   function pad(num, size) {
-      var s = num + "";
-   
-      while (s.length < size) s = "0" + s;
-      return s;
-   }
 }
+
+
+function pad(num, size) {
+    var s = num + "";
+ 
+    while (s.length < size) s = "0" + s;
+    return s;
+ }
 
 async function unsubscribeAll() {
     //construct the request to unsubscribe from everything
